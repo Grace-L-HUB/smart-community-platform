@@ -39,5 +39,6 @@ urlpatterns = [
     # API 文档路由
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    # 应用路由 - 稍后添加
+    # 应用路由
+    path('users/', include('apps.users.urls')),
 ]
