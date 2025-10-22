@@ -93,9 +93,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'community_platform',
+        'NAME': 'smart-community-platform',
         'USER': 'dev_user',
-        'PASSWORD': 'dev_password',
+        'PASSWORD': '7758258abcABC',
         'HOST': 'localhost',
         'PORT': '3306',
     }
