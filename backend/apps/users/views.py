@@ -135,6 +135,7 @@ class UserProfileView(APIView):
 
 class AddressViewSet(viewsets.ModelViewSet):
     """地址视图集"""
+    queryset = Address.objects.all()  # 添加queryset属性
     serializer_class = AddressSerializer
     permission_classes = [permissions.IsAuthenticated]
     

@@ -7,19 +7,19 @@ from .views import (
 
 # 创建路由器
 router = DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'addresses', AddressViewSet)
+router.register(r'', UserViewSet, basename='user')  # 根路径直接注册用户视图集
+router.register(r'addresses', AddressViewSet, basename='address')
 
 # 定义额外的路由
 urlpatterns = [
-    # API路由
-    path('api/', include(router.urls)),
+    # 包含路由器路由
+    path('', include(router.urls)),
     
     # 认证相关路由
-    path('api/auth/register/', UserRegisterView.as_view(), name='user-register'),
-    path('api/auth/login/', UserLoginView.as_view(), name='user-login'),
-    path('api/auth/logout/', UserLogoutView.as_view(), name='user-logout'),
+    path('auth/register/', UserRegisterView.as_view(), name='user-register'),
+    path('auth/login/', UserLoginView.as_view(), name='user-login'),
+    path('auth/logout/', UserLogoutView.as_view(), name='user-logout'),
     
     # 用户资料路由
-    path('api/profile/', UserProfileView.as_view(), name='user-profile'),
+    path('profile/', UserProfileView.as_view(), name='user-profile'),
 ]
