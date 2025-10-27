@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, UserProfile, Address
+from .models import User, UserProfile, Address, UserRole
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -100,3 +100,11 @@ class UserLoginSerializer(serializers.Serializer):
             raise serializers.ValidationError('用户名或手机号必须提供一个')
         
         return attrs
+
+
+class UserRoleSerializer(serializers.ModelSerializer):
+    """用户角色序列化器"""
+    class Meta:
+        model = UserRole
+        fields = ['id', 'name', 'role_type', 'permissions', 'created_at']
+        read_only_fields = ['id', 'created_at']

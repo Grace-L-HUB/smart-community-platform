@@ -50,9 +50,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 自定义应用
     'apps.users',
+    'apps.communities',
+    'apps.announcements',
+    'apps.work_orders',
+    'apps.merchants',
+    'apps.notifications',
+    'apps.services',
+    'apps.data_statistics',
+    'apps.common',
+    # 第三方库
     'rest_framework',
     'corsheaders',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [

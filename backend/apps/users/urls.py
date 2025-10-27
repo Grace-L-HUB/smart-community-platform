@@ -2,13 +2,14 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
     UserViewSet, UserRegisterView, UserLoginView, UserLogoutView,
-    UserProfileView, AddressViewSet
+    UserProfileView, AddressViewSet, UserRoleViewSet
 )
 
 # 创建路由器
 router = DefaultRouter()
 router.register(r'', UserViewSet, basename='user')  # 根路径直接注册用户视图集
 router.register(r'addresses', AddressViewSet, basename='address')
+router.register(r'roles', UserRoleViewSet, basename='user-role')
 
 # 定义额外的路由
 urlpatterns = [
