@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+# 加载环境变量
+load_dotenv()
 
 # 使用pymysql替代MySQLdb，在Windows上更容易安装
 import pymysql
@@ -30,12 +34,12 @@ PROJECT_DIR = BASE_DIR.parent  # PROJECT_DIR 指向项目根目录（smart-commu
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ad5%(3d=q(+_n0yx&obt4_68o3dz41ilcfofa(*h7s@@4%xrlb'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-ad5%(3d=q(+_n0yx&obt4_68o3dz41ilcfofa(*h7s@@4%xrlb')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']  # Docker环境中允许所有主机访问
 
 # 自定义用户模型配置
 AUTH_USER_MODEL = 'users.User'
@@ -104,11 +108,22 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'smart-community-platform',
-        'USER': 'dev_user',
-        'PASSWORD': '7758258abcABC',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': os.getenv('DB_NAME', 'smart-community-platform'),
+        'USER': os.getenv('DB_USER', 'dev_user'),
+        'PASSWORD': os.getenv('DB_PASSWORD', '7758258abcABC'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '3306'),
+    }
+}
+
+# Redis配置
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f"redis://{os.getenv('REDIS_HOST', 'localhost')}:{os.getenv('REDIS_PORT', '6379')}/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
     }
 }
 
