@@ -50,3 +50,9 @@ logs/
 # Coverage
 htmlcov/
 .coverage
+
+# Docker相关
+.docker/
+*.docker
+
+
