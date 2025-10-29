@@ -3,7 +3,7 @@ version: '3'
 services:
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python apps/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
     ports:
@@ -25,7 +25,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     ports:
-      - "3306:3306"
+      - "3307:3306"
     environment:
       - MYSQL_DATABASE=smart-community-platform
       - MYSQL_USER=dev_user

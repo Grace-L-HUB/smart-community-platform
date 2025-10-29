@@ -48,6 +48,7 @@ urlpatterns = [
     path('api/announcements/', include('apps.announcements.urls')),
     path('api/notifications/', include('apps.notifications.urls')),
     path('api/merchants/', include('apps.merchants.urls')),
+    path('api/payments/', include('apps.payments.urls')),
     path('api/common/', include('apps.common.urls')),
     path('api/statistics/', include('apps.data_statistics.urls')),
     # 保留services的API路径以确保兼容性

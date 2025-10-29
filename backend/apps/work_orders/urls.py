@@ -1,12 +1,5 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import WorkOrderViewSet, WorkOrderCommentViewSet, WorkOrderRatingViewSet
-
-router = DefaultRouter()
-router.register(r'work-orders', WorkOrderViewSet)
-router.register(r'comments', WorkOrderCommentViewSet)
-router.register(r'ratings', WorkOrderRatingViewSet)
+from django.urls import path
 
 urlpatterns = [
-    path('', include(router.urls)),
+    # 视图将在后续开发中添加
 ]

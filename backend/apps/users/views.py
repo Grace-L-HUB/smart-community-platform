@@ -3,10 +3,9 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate, login, logout
-from .models import User, UserProfile, Address
+from .models import User
 from .serializers import (
-    UserSerializer, UserRegisterSerializer, UserLoginSerializer,
-    UserProfileSerializer, AddressSerializer
+    UserSerializer, UserRegisterSerializer, UserLoginSerializer
 )
 
 
@@ -90,7 +89,7 @@ class UserLoginView(APIView):
                     'message': '登录成功',
                     'user_id': user.id,
                     'username': user.username,
-                    'role': user.role
+                    'role_id': user.role_id
                 })
             return Response({'detail': '用户名/手机号或密码错误'}, status=status.HTTP_401_UNAUTHORIZED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -103,55 +102,3 @@ class UserLogoutView(APIView):
     def post(self, request):
         logout(request)
         return Response({'message': '登出成功'})
-
-
-class UserProfileView(APIView):
-    """用户资料视图"""
-    permission_classes = [permissions.IsAuthenticated]
-    
-    def get(self, request):
-        try:
-            profile = request.user.profile
-            serializer = UserProfileSerializer(profile)
-            return Response(serializer.data)
-        except UserProfile.DoesNotExist:
-            return Response({'detail': '用户资料不存在'}, status=status.HTTP_404_NOT_FOUND)
-    
-    def put(self, request):
-        try:
-            profile = request.user.profile
-            serializer = UserProfileSerializer(profile, data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except UserProfile.DoesNotExist:
-            serializer = UserProfileSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save(user=request.user)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class AddressViewSet(viewsets.ModelViewSet):
-    """地址视图集"""
-    queryset = Address.objects.all()  # 添加queryset属性
-    serializer_class = AddressSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    
-    def get_queryset(self):
-        """只返回当前用户的地址"""
-        return Address.objects.filter(user=self.request.user)
-    
-    def perform_create(self, serializer):
-        """创建地址时自动关联当前用户"""
-        # 如果设置为默认地址，取消其他地址的默认状态
-        if serializer.validated_data.get('is_default', False):
-            Address.objects.filter(user=self.request.user, is_default=True).update(is_default=False)
-        serializer.save(user=self.request.user)
-    
-    def perform_update(self, serializer):
-        """更新地址时处理默认地址逻辑"""
-        if serializer.validated_data.get('is_default', False):
-            Address.objects.filter(user=self.request.user, is_default=True).exclude(id=self.get_object().id).update(is_default=False)
-        serializer.save()

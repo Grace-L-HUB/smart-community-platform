@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'apps.services',
     'apps.data_statistics',
     'apps.common',
+    'apps.payments',
     # 第三方库
     'rest_framework',
     'corsheaders',
