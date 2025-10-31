@@ -186,7 +186,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # 用户上传的文件存储在�
 
 # 开发时的静态文件目录
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  # 开发时额外的静态文件目录
+    # os.path.join(BASE_DIR, 'static'),  # 开发时额外的静态文件目录（暂时注释掉）
 ]
 
 # Default primary key field type

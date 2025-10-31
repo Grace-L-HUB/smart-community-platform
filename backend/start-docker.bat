@@ -1,41 +1,42 @@
 @echo off
+chcp 65001 >nul
 
-REM 智慧社区平台 - Docker开发环境启动脚本
-REM 此脚本用于在Windows环境下快速启动开发环境
+REM Smart Community Platform - Docker Development Environment Startup Script
+REM This script is used to quickly start the development environment on Windows
 
 set "DOCKER_COMPOSE_FILE=docker-compose.yml"
 
-REM 停止并移除现有的容器
-@echo 正在停止并清理现有的容器...
+REM Stop and remove existing containers
+echo Stopping and cleaning existing containers...
 docker-compose -f %DOCKER_COMPOSE_FILE% down -v
 
-REM 构建并启动新的容器
-@echo 正在构建并启动新的Docker容器...
+REM Build and start new containers
+echo Building and starting new Docker containers...
 docker-compose -f %DOCKER_COMPOSE_FILE% up -d --build
 
-REM 等待数据库服务就绪
-@echo 等待MySQL数据库服务就绪...
+REM Wait for database service to be ready
+echo Waiting for MySQL database service to be ready...
 ping -n 10 127.0.0.1 > nul
 
-REM 运行数据库迁移
-@echo 正在执行数据库迁移...
+REM Run database migrations
+echo Running database migrations...
 docker-compose -f %DOCKER_COMPOSE_FILE% exec web python apps/manage.py migrate
 
-REM 创建超级用户（如果不存在）
-@echo 正在创建超级用户...
-docker-compose -f %DOCKER_COMPOSE_FILE% exec web python apps/manage.py createsuperuser --noinput || echo 超级用户可能已存在或创建失败
+REM Create superuser (if not exists)
+echo Creating superuser...
+docker-compose -f %DOCKER_COMPOSE_FILE% exec -e DJANGO_SUPERUSER_USERNAME=admin -e DJANGO_SUPERUSER_EMAIL=admin@example.com -e DJANGO_SUPERUSER_PASSWORD=admin123456 web python apps/manage.py createsuperuser --noinput || echo Superuser may already exist or creation failed
 
-REM 显示服务信息
-@echo 开发环境已成功启动！
-@echo ====================================================
-@echo 访问地址：
-@echo - 管理后台：http://localhost:8000/admin/
-@echo - API文档：http://localhost:8000/swagger/
-@echo - 健康检查：http://localhost:8000/health/
-@echo ====================================================
-@echo 如需查看日志，请运行: docker-compose -f %DOCKER_COMPOSE_FILE% logs -f
-@echo 如需停止服务，请运行: docker-compose -f %DOCKER_COMPOSE_FILE% down
-@echo ====================================================
+REM Display service information
+echo Development environment started successfully!
+echo ====================================================
+echo Access URLs:
+echo - Admin Panel: http://localhost:8000/admin/
+echo - API Documentation: http://localhost:8000/swagger/
+echo - Health Check: http://localhost:8000/health/
+echo ====================================================
+echo To view logs, run: docker-compose -f %DOCKER_COMPOSE_FILE% logs -f
+echo To stop services, run: docker-compose -f %DOCKER_COMPOSE_FILE% down
+echo ====================================================
 
 REM 保持窗口打开
 pause
