@@ -1,0 +1,68 @@
+<!-- 公告页面 -->
+<view class="container">
+  <!-- 顶部导航 -->
+  <view class="nav-bar">
+    <view class="back-button" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <view class="nav-title">社区公告</view>
+    <view class="right-space"></view>
+  </view>
+
+  <!-- 公告列表 -->
+  <view class="announcement-list">
+    <!-- 紧急通知 -->
+    <view class="announcement-item">
+      <view class="announcement-header">
+        <text class="announcement-tag urgent">紧急通知</text>
+        <text class="announcement-time">2023-06-20</text>
+      </view>
+      <view class="announcement-content">
+        <view class="announcement-title">关于小区电梯维护的通知</view>
+        <view class="announcement-body">
+          <text>尊敬的业主：</text>
+          <text>为确保小区电梯安全运行，本小区将于2023年6月24日（周六）9:00-17:00进行电梯例行维护保养。维护期间，电梯将暂停使用，请各位业主提前做好出行安排。</text>
+          <text>给您带来的不便，敬请谅解！如有特殊情况，请联系物业服务中心：020-12345678。</text>
+          <text>幸福里物业服务中心</text>
+          <text>2023年6月20日</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 活动通知 -->
+    <view class="announcement-item">
+      <view class="announcement-header">
+        <text class="announcement-tag activity">活动通知</text>
+        <text class="announcement-time">2023-06-19</text>
+      </view>
+      <view class="announcement-content">
+        <view class="announcement-title">社区消防安全知识讲座</view>
+        <view class="announcement-body">
+          <text>尊敬的业主：</text>
+          <text>为提高居民消防安全意识，普及消防安全知识，社区将于2023年6月28日（周三）19:00在社区活动中心举办消防安全知识讲座，邀请专业消防人员进行讲解。</text>
+          <text>讲座内容包括：火灾预防、灭火器使用、火灾逃生技巧等实用知识。欢迎各位业主参加！</text>
+          <text>幸福里社区委员会</text>
+          <text>2023年6月19日</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 其他公告 -->
+    <view class="announcement-item">
+      <view class="announcement-header">
+        <text class="announcement-tag normal">通知</text>
+        <text class="announcement-time">2023-06-15</text>
+      </view>
+      <view class="announcement-content">
+        <view class="announcement-title">小区绿化改造通知</view>
+        <view class="announcement-body">
+          <text>尊敬的业主：</text>
+          <text>为提升小区居住环境，美化社区景观，我司将于2023年7月1日至7月15日对小区公共区域进行绿化改造升级。</text>
+          <text>改造期间，部分区域可能临时封闭，给您带来的不便，敬请谅解。</text>
+          <text>幸福里物业服务中心</text>
+          <text>2023年6月15日</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

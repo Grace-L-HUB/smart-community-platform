@@ -1,0 +1,65 @@
+<!-- 报修页面 -->
+<view class="container">
+  <!-- 顶部导航 -->
+  <view class="nav-bar">
+    <view class="back-button" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <view class="nav-title">物业报修</view>
+    <view class="right-space"></view>
+  </view>
+
+  <!-- 报修表单 -->
+  <form class="repair-form" bindsubmit="submitRepair">
+    <!-- 报修类型 -->
+    <view class="form-item">
+      <view class="form-label">报修类型 <text class="required">*</text></view>
+      <picker bindchange="bindTypeChange" value="{{repairTypeIndex}}" range="{{repairTypes}}" class="picker">
+        <view class="picker-content">{{repairTypes[repairTypeIndex]}}</view>
+      </picker>
+    </view>
+
+    <!-- 报修位置 -->
+    <view class="form-item">
+      <view class="form-label">报修位置 <text class="required">*</text></view>
+      <input class="form-input" placeholder="如：客厅、卧室、卫生间等" name="location" value="{{location}}" bindinput="inputLocation" />
+    </view>
+
+    <!-- 问题描述 -->
+    <view class="form-item">
+      <view class="form-label">问题描述 <text class="required">*</text></view>
+      <textarea class="form-textarea" placeholder="请详细描述您遇到的问题" name="description" value="{{description}}" bindinput="inputDescription" auto-height="true" maxlength="500" />
+    </view>
+
+    <!-- 上传照片 -->
+    <view class="form-item">
+      <view class="form-label">上传照片（选填）</view>
+      <view class="upload-container">
+        <view class="upload-tip">最多上传3张照片，每张不超过5MB</view>
+        <view class="upload-list">
+          <block wx:for="{{images}}" wx:key="index">
+            <view class="image-item">
+              <image class="upload-image" src="{{item}}" mode="aspectFill"></image>
+              <view class="delete-icon" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </block>
+          <view wx:if="{{images.length < 3}}" class="upload-btn" bindtap="uploadImage">
+            <text class="upload-icon">📷</text>
+            <text class="upload-text">添加照片</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 预约时间 -->
+    <view class="form-item">
+      <view class="form-label">预约时间（选填）</view>
+      <picker mode="date" bindchange="bindDateChange" value="{{date}}" start="{{startDate}}" class="picker">
+        <view class="picker-content">{{date || '请选择日期'}}</view>
+      </picker>
+    </view>
+
+    <!-- 提交按钮 -->
+    <button class="submit-btn" type="primary" form-type="submit">提交报修</button>
+  </form>
+</view>

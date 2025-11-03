@@ -1,187 +1,91 @@
-// index.js
+//index.js
+const app = getApp()
+
 Page({
   data: {
-    showTip: false,
-    powerList: [
+    // 用户信息
+    userInfo: {
+      name: '张先生',
+      address: '幸福里小区 3栋2单元1001室',
+      role: '业主'
+    },
+    // 公告列表
+    announcements: [
       {
-        title: '云托管',
-        tip: '不限语言的全托管容器服务',
-        showItem: false,
-        item: [
-          {
-            type: 'cloudbaserun',
-            title: '云托管调用',
-          },
-        ],
+        id: '1',
+        title: '关于小区电梯维护的通知',
+        tag: '通知',
+        time: '今天'
       },
       {
-        title: '云函数',
-        tip: '安全、免鉴权运行业务代码',
-        showItem: false,
-        item: [
-          {
-            type: 'getOpenId',
-            title: '获取OpenId',
-          },
-          {
-            type: 'getMiniProgramCode',
-            title: '生成小程序码',
-          },
-        ],
-      },
-      {
-        title: '数据库',
-        tip: '安全稳定的文档型数据库',
-        showItem: false,
-        item: [
-          {
-            type: 'createCollection',
-            title: '创建集合',
-          },
-          {
-            type: 'selectRecord',
-            title: '增删改查记录',
-          },
-          // {
-          //   title: '聚合操作',
-          //   page: 'sumRecord',
-          // },
-        ],
-      },
-      {
-        title: '云存储',
-        tip: '自带CDN加速文件存储',
-        showItem: false,
-        item: [
-          {
-            type: 'uploadFile',
-            title: '上传文件',
-          },
-        ],
-      },
-      // {
-      //   type: 'singleTemplate',
-      //   title: '云模板',
-      //   tip: '基于页面模板，快速配置、搭建小程序页面',
-      //   tag: 'new',
-      // },
-      // {
-      //   type: 'cloudBackend',
-      //   title: '云后台',
-      //   tip: '开箱即用的小程序后台管理系统',
-      // },
-      {
-        title: '拓展能力-AI',
-        tip: '云开发 AI 拓展能力',
-        showItem: false,
-        item: [
-          {
-            type: 'model-guide',
-            title: '大模型对话指引'
-          },
-        ],
-      },
+        id: '2',
+        title: '社区消防安全知识讲座',
+        tag: '活动',
+        time: '昨天'
+      }
     ],
-    haveCreateCollection: false,
-    title: "",
-    content: ""
+    // 报修工单
+    repairOrders: [
+      {
+        id: '1',
+        desc: '客厅灯不亮',
+        status: '待处理'
+      }
+    ]
   },
-  onClickPowerInfo(e) {
-    const app = getApp()
-    if(!app.globalData.env) {
-      wx.showModal({
-        title: '提示',
-        content: '请在 `miniprogram/app.js` 中正确配置 `env` 参数'
-      })
-      return 
-    }
-    console.log("click e", e)
-    const index = e.currentTarget.dataset.index;
-    const powerList = this.data.powerList;
-    const selectedItem = powerList[index];
-    console.log("selectedItem", selectedItem)
-    if (selectedItem.link) {
-      wx.navigateTo({
-        url: `../web/index?url=${selectedItem.link}&title=${selectedItem.title}`,
-      });
-    } else if (selectedItem.type) {
-      console.log("selectedItem", selectedItem)
-      wx.navigateTo({
-        url: `/pages/example/index?envId=${this.data.selectedEnv?.envId}&type=${selectedItem.type}`,
-      });
-    } else if (selectedItem.page) {
-      wx.navigateTo({
-        url: `/pages/${selectedItem.page}/index`,
-      });
-    } else if (
-      selectedItem.title === '数据库' &&
-      !this.data.haveCreateCollection
-    ) {
-      this.onClickDatabase(powerList,selectedItem);
-    } else {
-      selectedItem.showItem = !selectedItem.showItem;
-      this.setData({
-        powerList,
-      });
-    }
+  
+  onLoad: function() {
+    // 初始化数据
+    this.loadUserInfo();
+    this.loadAnnouncements();
+    this.loadRepairOrders();
   },
-
-  jumpPage(e) {
-    const { type, page } = e.currentTarget.dataset;
-    console.log("jump page", type, page)
-    if (type) {
-      wx.navigateTo({
-        url: `/pages/example/index?envId=${this.data.selectedEnv?.envId}&type=${type}`,
-      });
-    } else {
-      wx.navigateTo({
-        url: `/pages/${page}/index?envId=${this.data.selectedEnv?.envId}`,
-      });
-    }
+  
+  // 加载用户信息
+  loadUserInfo: function() {
+    // 这里可以调用后端API获取用户信息
+    // 暂时使用模拟数据
   },
-
-  onClickDatabase(powerList,selectedItem) {
-    wx.showLoading({
-      title: '',
-    });
-    wx.cloud
-      .callFunction({
-        name: 'quickstartFunctions',
-        data: {
-          type: 'createCollection',
-        },
-      })
-      .then((resp) => {
-        if (resp.result.success) {
-          this.setData({
-            haveCreateCollection: true,
-          });
-        }
-        selectedItem.showItem = !selectedItem.showItem;
-        this.setData({
-          powerList,
-        });
-        wx.hideLoading();
-      })
-      .catch((e) => {
-        wx.hideLoading();
-        const { errCode, errMsg } = e
-        if (errMsg.includes('Environment not found')) {
-          this.setData({
-            showTip: true,
-            title: "云开发环境未找到",
-            content: "如果已经开通云开发，请检查环境ID与 `miniprogram/app.js` 中的 `env` 参数是否一致。"
-          });
-          return
-        }
-        if (errMsg.includes('FunctionName parameter could not be found')) {
-          this.setData({
-            showTip: true,
-            title: "请上传云函数",
-            content: "在'cloudfunctions/quickstartFunctions'目录右键，选择【上传并部署-云端安装依赖】，等待云函数上传完成后重试。"
-          });
-          return
-        }
-      });
+  
+  // 加载公告信息
+  loadAnnouncements: function() {
+    // 这里可以调用后端API获取公告列表
+    // 暂时使用模拟数据
   },
-});
+  
+  // 加载报修工单
+  loadRepairOrders: function() {
+    // 这里可以调用后端API获取报修工单
+    // 暂时使用模拟数据
+  },
+  
+  // 跳转到公告列表页
+  goToAnnouncements: function() {
+    wx.navigateTo({
+      url: '/pages/announcements/index'
+    })
+  },
+  
+  // 跳转到报修页面
+  goToRepair: function() {
+    wx.navigateTo({
+      url: '/pages/repair/index'
+    })
+  },
+  
+  // 跳转到缴费查询
+  goToPayment: function() {
+    wx.showToast({
+      title: '功能开发中',
+      icon: 'none'
+    })
+  },
+  
+  // 跳转到商户服务
+  goToMerchants: function() {
+    wx.showToast({
+      title: '功能开发中',
+      icon: 'none'
+    })
+  }
+})

@@ -1,29 +1,88 @@
-<!--index.wxml-->
+<!-- 首页 -->
 <view class="container">
-  <view class="title">快速了解云开发</view>
-  <view class="top_tip">免鉴权接口调用 免部署后台 高并发</view>
-  <view class="power" wx:key="title" wx:for="{{powerList}}" wx:for-item="power">
-    <view class="power_info" data-index="{{index}}" data-type="{{ power.type }}" bindtap="onClickPowerInfo">
-      <view class="power_info_text">
-        <view class="power_info_text_title">
-          {{power.title}}
-          <view class="power_info_text_tag" wx:if="{{power.tag}}">{{power.tag}}</view>
-        </view>
-        <view class="power_info_text_tip">{{power.tip}}</view>
-      </view>
-      <image wx:if="{{!power.showItem && power.item.length}}" class="power_info_more" src="../../images/arrow.svg"></image>
-      <image wx:if="{{power.showItem && power.item.length}}" class="power_info_less" src="../../images/arrow.svg"></image>
-      <image wx:if="{{!power.item.length}}" class="power_item_icon" src="../../images/arrow.svg"></image>
+  <!-- 顶部导航栏 -->
+  <view class="header">
+    <text class="logo">幸福里社区</text>
+    <view class="header-right">
+      <image class="icon" src="/images/bell.png"></image>
+      <image class="icon" src="/images/search.png"></image>
     </view>
-    <view wx:if="{{power.showItem}}">
-      <view wx:key="title" wx:for="{{power.item}}">
-        <view class="line"></view>
-        <view class="power_item" bindtap="jumpPage" data-type="{{ item.type }}" data-page="{{item.page}}">
-          <view class="power_item_title">{{item.title}}</view>
-          <image class="power_item_icon" src="../../images/arrow.svg"></image>
+  </view>
+
+  <!-- 用户信息卡片 -->
+  <view class="user-card">
+    <image class="avatar" src="/images/avatar.png"></image>
+    <view class="user-info">
+      <view class="user-name">张先生</view>
+      <view class="user-address">幸福里小区 3栋2单元1001室</view>
+    </view>
+    <view class="user-role">业主</view>
+  </view>
+
+  <!-- 快速服务 -->
+  <view class="quick-service">
+    <view class="service-item" bindtap="goToRepair">
+      <view class="service-icon repair-icon">
+        <text class="icon-text">🔧</text>
+      </view>
+      <text class="service-name">报修服务</text>
+    </view>
+    <view class="service-item" bindtap="goToAnnouncements">
+      <view class="service-icon announcement-icon">
+        <text class="icon-text">📢</text>
+      </view>
+      <text class="service-name">社区公告</text>
+    </view>
+    <view class="service-item">
+      <view class="service-icon payment-icon">
+        <text class="icon-text">💰</text>
+      </view>
+      <text class="service-name">缴费查询</text>
+    </view>
+    <view class="service-item">
+      <view class="service-icon merchant-icon">
+        <text class="icon-text">🏪</text>
+      </view>
+      <text class="service-name">商户服务</text>
+    </view>
+  </view>
+
+  <!-- 社区公告 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">社区公告</text>
+      <view class="section-more" bindtap="goToAnnouncements">查看全部</view>
+    </view>
+    <view class="announcement-list">
+      <view class="announcement-item">
+        <view class="announcement-content">
+          <text class="announcement-tag">通知</text>
+          <text class="announcement-title">关于小区电梯维护的通知</text>
         </view>
+        <text class="announcement-time">今天</text>
+      </view>
+      <view class="announcement-item">
+        <view class="announcement-content">
+          <text class="announcement-tag">活动</text>
+          <text class="announcement-title">社区消防安全知识讲座</text>
+        </view>
+        <text class="announcement-time">昨天</text>
       </view>
     </view>
   </view>
-  <cloud-tip-modal showTipProps="{{showTip}}" title="{{title}}" content="{{content}}"></cloud-tip-modal>
+
+  <!-- 物业报修 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">物业报修</text>
+      <view class="section-more" bindtap="goToRepair">我要报修</view>
+    </view>
+    <view class="repair-reminder">
+      <text class="reminder-icon">⚠️</text>
+      <text class="reminder-text">您有1个待处理的报修工单</text>
+    </view>
+    <view class="repair-item">
+      <text class="repair-desc">客厅灯不亮</text>
+    </view>
+  </view>
 </view>
