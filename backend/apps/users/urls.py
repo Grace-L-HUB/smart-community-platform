@@ -1,7 +1,13 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenVerifyView
+)
 from .views import (
-    UserViewSet, UserRegisterView, UserLoginView, UserLogoutView
+    UserViewSet, UserRegisterView, UserLoginView, UserLogoutView,
+    WeChatLoginView, CustomTokenObtainPairView
 )
 
 # 创建路由器
@@ -19,5 +25,11 @@ urlpatterns = [
     path('auth/login/', UserLoginView.as_view(), name='user-login'),
     path('auth/logout/', UserLogoutView.as_view(), name='user-logout'),
     
-
+    # JWT相关路由
+    path('auth/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('auth/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    
+    # 微信登录路由
+    path('auth/wechat/', WeChatLoginView.as_view(), name='wechat-login'),
 ]

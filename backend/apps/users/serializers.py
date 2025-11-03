@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import User, UserRole
 
 
@@ -72,3 +73,35 @@ class UserRoleSerializer(serializers.ModelSerializer):
         model = UserRole
         fields = ['id', 'name', 'role_type', 'permissions', 'created_at']
         read_only_fields = ['id', 'created_at']
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    """自定义JWT令牌获取序列化器"""
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        
+        # 添加自定义声明
+        token['username'] = user.username
+        token['phone'] = user.phone
+        token['role_id'] = user.role_id
+        
+        return token
+    
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        
+        # 添加用户信息到返回数据
+        data['user_id'] = self.user.id
+        data['username'] = self.user.username
+        data['phone'] = self.user.phone
+        data['role_id'] = self.user.role_id
+        
+        return data
+
+
+class WeChatLoginSerializer(serializers.Serializer):
+    """微信登录序列化器"""
+    code = serializers.CharField(required=True, help_text='微信登录授权码')
+    avatar_url = serializers.CharField(required=False, allow_blank=True)
+    nickname = serializers.CharField(required=False, allow_blank=True)
