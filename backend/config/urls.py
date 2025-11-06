@@ -34,13 +34,25 @@ schema_view = get_schema_view(
    permission_classes=(permissions.AllowAny,),
 )
 
+from django.http import JsonResponse
+
+def health_check(request):
+    """健康检查端点"""
+    return JsonResponse({
+        'status': 'healthy',
+        'message': 'Smart Community Platform API is running'
+    })
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
+
+    # 健康检查
+    path('health/', health_check, name='health-check'),
+
     # API文档
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    
+
     # API路由
     path('api/users/', include('apps.users.urls')),
     path('api/communities/', include('apps.communities.urls')),

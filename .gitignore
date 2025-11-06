@@ -56,3 +56,4 @@ htmlcov/
 *.docker
 
 
+.claude/settings.local.json

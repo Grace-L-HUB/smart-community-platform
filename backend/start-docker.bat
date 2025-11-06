@@ -23,7 +23,7 @@ docker-compose -f %DOCKER_COMPOSE_FILE% exec web python apps/manage.py migrate
 
 REM 创建超级用户（如果不存在）
 @echo 正在创建超级用户...
-docker-compose -f %DOCKER_COMPOSE_FILE% exec web python apps/manage.py createsuperuser --noinput || echo 超级用户可能已存在或创建失败
+docker-compose -f %DOCKER_COMPOSE_FILE% exec web python apps/manage.py createsuperuser --noinput --username admin|| echo 超级用户可能已存在或创建失败
 
 REM 显示服务信息
 @echo 开发环境已成功启动！

@@ -1,5 +1,13 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import CommunityViewSet, BuildingViewSet, HouseViewSet, UserHouseViewSet
+
+router = DefaultRouter()
+router.register('communities', CommunityViewSet)
+router.register('buildings', BuildingViewSet)
+router.register('houses', HouseViewSet)
+router.register('user-houses', UserHouseViewSet)
 
 urlpatterns = [
-    # 视图将在后续开发中添加
+    path('', include(router.urls)),
 ]

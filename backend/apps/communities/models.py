@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
 from apps.users.models import User
 import uuid
@@ -9,7 +10,13 @@ class Community(models.Model):
     name = models.CharField(_('小区名称'), max_length=100, unique=True)
     address = models.CharField(_('地址'), max_length=200)
     property_phone = models.CharField(_('物业电话'), max_length=20)
-    fee_standard = models.DecimalField(_('物业费标准'), max_digits=10, decimal_places=2, help_text='元/平米')
+    fee_standard = models.DecimalField(
+        _('物业费标准'),
+        max_digits=10,
+        decimal_places=2,
+        validators=[MinValueValidator(0)],
+        help_text='元/平米'
+    )
     created_at = models.DateTimeField(_('创建时间'), auto_now_add=True)
     updated_at = models.DateTimeField(_('更新时间'), auto_now=True)
     
@@ -60,12 +67,12 @@ class UserHouse(models.Model):
     class RelationshipType(models.TextChoices):
         OWNER = 'owner', _('业主')
         FAMILY = 'family', _('家庭成员')
-    
+
     class StatusType(models.TextChoices):
         PENDING = 'pending', _('待审核')
         APPROVED = 'approved', _('已通过')
         REJECTED = 'rejected', _('已拒绝')
-    
+
     id = models.BigIntegerField(_('主键'), primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_houses', verbose_name=_('用户'))
     house = models.ForeignKey(House, on_delete=models.CASCADE, related_name='user_houses', verbose_name=_('房屋'))
@@ -100,7 +107,7 @@ class PropertyFeeBill(models.Model):
         PENDING = 'pending', _('待支付')
         PAID = 'paid', _('已支付')
         OVERDUE = 'overdue', _('已逾期')
-    
+
     id = models.BigIntegerField(_('主键ID'), primary_key=True)
     house_id = models.BigIntegerField(_('关联的房屋ID'))
     billing_period = models.CharField(_('账期'), max_length=7, help_text='格式：YYYY-MM')
@@ -127,7 +134,7 @@ class VisitorPass(models.Model):
         USED = 'used', _('已使用')
         EXPIRED = 'expired', _('已过期')
         CANCELLED = 'cancelled', _('已取消')
-    
+
     id = models.BigIntegerField(_('主键ID'), primary_key=True)
     user_id = models.BigIntegerField(_('生成此通行证的居民用户ID'))
     house_id = models.BigIntegerField(_('访问的房产ID'))
