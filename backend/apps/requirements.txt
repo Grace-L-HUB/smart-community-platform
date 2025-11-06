@@ -10,3 +10,4 @@ django-redis==5.2.0
 drf-yasg==1.21.5
 djangorestframework-simplejwt==5.2.2
 requests==2.31.0
+django-filter==23.2

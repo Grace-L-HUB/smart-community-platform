@@ -237,8 +237,8 @@ SWAGGER_SETTINGS = {
     },
     'USE_SESSION_AUTH': False,
     'JSON_EDITOR': True,
-    'LOGIN_URL': 'rest_framework:login',
-    'LOGOUT_URL': 'rest_framework:logout',
+    'LOGIN_URL': '/admin/login/',
+    'LOGOUT_URL': '/admin/logout/',
 }
 
 REDOC_SETTINGS = {
