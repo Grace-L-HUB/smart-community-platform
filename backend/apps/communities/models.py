@@ -66,7 +66,7 @@ class UserHouse(models.Model):
         APPROVED = 'approved', _('已通过')
         REJECTED = 'rejected', _('已拒绝')
     
-    id = models.BigIntegerField(_('主键'), primary_key=True)
+    id = models.BigAutoField(_('主键'), primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_houses', verbose_name=_('用户'))
     house = models.ForeignKey(House, on_delete=models.CASCADE, related_name='user_houses', verbose_name=_('房屋'))
     relationship = models.CharField(
@@ -101,7 +101,7 @@ class PropertyFeeBill(models.Model):
         PAID = 'paid', _('已支付')
         OVERDUE = 'overdue', _('已逾期')
     
-    id = models.BigIntegerField(_('主键ID'), primary_key=True)
+    id = models.BigAutoField(_('主键ID'), primary_key=True)
     house_id = models.BigIntegerField(_('关联的房屋ID'))
     billing_period = models.CharField(_('账期'), max_length=7, help_text='格式：YYYY-MM')
     amount = models.DecimalField(_('应缴金额'), max_digits=10, decimal_places=2)
@@ -128,12 +128,12 @@ class VisitorPass(models.Model):
         EXPIRED = 'expired', _('已过期')
         CANCELLED = 'cancelled', _('已取消')
     
-    id = models.BigIntegerField(_('主键ID'), primary_key=True)
+    id = models.BigAutoField(_('主键ID'), primary_key=True)
     user_id = models.BigIntegerField(_('生成此通行证的居民用户ID'))
     house_id = models.BigIntegerField(_('访问的房产ID'))
     visitor_name = models.CharField(_('访客姓名'), max_length=100)
     visitor_phone = models.CharField(_('访客手机号'), max_length=20)
-    pass_code = models.CharField(_('唯一的通行二维码内容'), max_length=32, default=uuid.uuid4)
+    pass_code = models.CharField(_('唯一的通行二维码内容'), max_length=64, blank=True)
     valid_from = models.DateTimeField(_('有效期开始时间'))
     valid_to = models.DateTimeField(_('有效期结束时间'))
     status = models.CharField(_('状态'), max_length=20, choices=PassStatus.choices, default=PassStatus.ACTIVE)
