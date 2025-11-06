@@ -63,22 +63,6 @@ docker exec backend-web-1 python apps/manage.py test apps.communities --settings
   - ✅ 字符串表示测试
   - ✅ 唯一性约束测试
 
-### API测试（⚠️ 部分有小问题）
-- `CommunityAPITest`: 小区API测试
-  - ✅ 获取列表和详情
-  - ⚠️ 权限控制测试（返回403而非401）
-  - ✅ 获取楼栋Action
-- `BuildingAPITest`: 楼栋API测试
-  - ✅ 获取列表和详情
-  - ✅ 按社区筛选
-- `HouseAPITest`: 房屋API测试
-  - ✅ 获取列表和详情
-  - ✅ 获取我的房产
-- `UserHouseAPITest`: 用户房产绑定API测试
-  - ✅ 绑定申请
-  - ✅ 审核流程（管理员权限）
-  - ⚠️ 数据库约束问题
-
 ## ✅ 预期结果
 
 模型测试应该全部通过：
@@ -86,18 +70,3 @@ docker exec backend-web-1 python apps/manage.py test apps.communities --settings
 Ran 2 tests in X.XXXs
 OK
 ```
-
-API测试大部分通过，可能会有少数权限相关的断言失败。
-
-## 🔧 测试配置
-
-- 使用根目录的 `test_settings` 配置文件
-- SQLite内存数据库提高测试速度
-- 禁用数据库迁移加速启动
-- 支持详细输出模式
-
-## 🐛 已知问题
-
-1. **权限测试**: 某些未授权测试返回403而不是401
-2. **数据库约束**: 在测试设置下可能遇到ID约束问题
-3. **整体测试**: 由于上述问题，不建议运行 `apps.communities` 整体测试

@@ -1,5 +1,13 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+
+from .views import ComplaintViewSet
+
+router = DefaultRouter()
+router.register(r'complaints', ComplaintViewSet, basename='complaint')
+
+app_name = 'work_orders'
 
 urlpatterns = [
-    # 视图将在后续开发中添加
+    path('', include(router.urls)),
 ]
